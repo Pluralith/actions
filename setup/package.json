@@ -4,7 +4,8 @@
   "description": "Github action to set up Pluralith in a workflow",
   "main": "dist/index.js",
   "scripts": {
-    "build": "ncc build src/index.ts -o dist --source-map"
+    "build": "ncc build src/index.ts -o dist --source-map",
+    "dev": "npx ts-node ./src/index.ts"
   },
   "repository": {
     "type": "git",
@@ -13,7 +14,9 @@
   "author": "Pluralith Core Team",
   "license": "Apache-2.0",
   "devDependencies": {
+    "@types/node": "^17.0.21",
     "@vercel/ncc": "^0.33.3",
+    "ts-node": "^10.7.0",
     "typescript": "^4.6.2"
   },
   "dependencies": {
@@ -21,6 +24,7 @@
     "@actions/exec": "^1.1.0",
     "@actions/github": "^5.0.0",
     "@actions/io": "^1.1.1",
-    "@actions/tool-cache": "^1.7.1"
+    "@actions/tool-cache": "^1.7.1",
+    "axios": "^0.26.1"
   }
 }
