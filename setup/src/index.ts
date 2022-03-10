@@ -8,22 +8,23 @@ import * as io from '@actions/io';
 import * as exec from '@actions/exec';
 import * as github from '@actions/github';
 
-function GetPlatformDetails(): string[] {
-  let platform;
-  let arch = "amd64"// = os.arch() // Currently only amd64 supported
+function GetPlatformDetails(): { os: string, arch: string } {
+  let currentOS;
+  let currentArch = "amd64"// = os.arch() // Currently only amd64 supported
 
   let unixPlatforms = ['aix', 'freebsd','linux', 'openbsd', 'sunos']
 
-  if (unixPlatforms.includes(os.platform())) platform = 'linux'
-  else if (os.platform() === 'win32') platform = 'windows'
-  else platform = 'darwin'
+  if (unixPlatforms.includes(os.platform())) currentOS = 'linux'
+  else if (os.platform() === 'win32') currentOS = 'windows'
+  else currentOS = 'darwin'
 
-  return [platform, arch]
+  return {
+    os: currentOS,
+    arch: currentArch
+  }
 }
 
-async function GetLatestReleaseURL(): Promise<string> {
-  let [platform, arch] = GetPlatformDetails() as [string, string]
-
+async function GetLatestReleaseURL(platform: string, arch: string): Promise<string> {
   let releaseURL = "https://api.github.com/repos/pluralith/pluralith-cli/releases/latest"
 	let releaseData = await axios.get(releaseURL)
 
@@ -35,5 +36,15 @@ async function GetLatestReleaseURL(): Promise<string> {
   return binObject.browser_download_url
 }
 
-GetLatestReleaseURL()
+
+async function Setup() {
+  let platform = GetPlatformDetails()
+  let releaseURL = await GetLatestReleaseURL(platform.os, platform.arch)
+
+  const binPath = await tc.downloadTool(releaseURL);
+  console.log(binPath)
+}
+
+
+Setup()
 
