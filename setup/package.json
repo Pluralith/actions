@@ -1,0 +1,26 @@
+{
+  "name": "pluralith-setup",
+  "version": "0.0.1",
+  "description": "Github action to set up Pluralith in a workflow",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "ncc build src/index.ts -o dist --source-map"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pluralith/actions/setup.git"
+  },
+  "author": "Pluralith Core Team",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@vercel/ncc": "^0.33.3",
+    "typescript": "^4.6.2"
+  },
+  "dependencies": {
+    "@actions/core": "^1.6.0",
+    "@actions/exec": "^1.1.0",
+    "@actions/github": "^5.0.0",
+    "@actions/io": "^1.1.1",
+    "@actions/tool-cache": "^1.7.1"
+  }
+}
