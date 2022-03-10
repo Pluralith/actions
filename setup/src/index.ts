@@ -36,13 +36,26 @@ async function GetLatestReleaseURL(platform: string, arch: string): Promise<stri
   return binObject.browser_download_url
 }
 
+async function MoveReleaseBin(downloadPath: string) {
+  let targetPath = '/usr/local/bin/pluralith'
+  core.debug(`Move release binary from ${downloadPath} to ${targetPath}`)
+
+  try {
+    await io.mv(downloadPath, targetPath)
+  } catch (error) {
+    core.error(`Moving release binary from ${downloadPath} to ${targetPath} failed`)
+    throw error
+  }
+}
+
 
 async function Setup() {
   let platform = GetPlatformDetails()
   let releaseURL = await GetLatestReleaseURL(platform.os, platform.arch)
 
-  const binPath = await tc.downloadTool(releaseURL);
-  console.log(binPath)
+  let binPath = await tc.downloadTool(releaseURL);
+  
+  if (platform.os !== 'windows') await MoveReleaseBin(binPath)
 }
 
 
