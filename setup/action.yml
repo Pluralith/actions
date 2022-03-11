@@ -5,7 +5,7 @@ inputs:
     description: Your Pluralith API key, can be found in the Pluralith Desktop app or the Pluralith Dashboard
     required: true
   github-token:
-    description: "GitHub access token to get the list of Pluralith CLI versions. Defaults to {{ github.token }}, can be set throught {{ secrets.GITHUB_TOKEN }}"
+    description: "The GitHub access token used to get a list of Pluralith CLI versions. Defaults to {{ github.token }}, can be set throught {{ secrets.GITHUB_TOKEN }}"
     default: "${{ github.token }}"
     required: false
 runs:
