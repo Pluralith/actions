@@ -8580,6 +8580,8 @@ function RenameReleaseBin(downloadPath, currentOS) {
         core.info(`Rename release binary from ${downloadPath} to ${targetPath}`);
         try {
             yield io.mv(downloadPath, targetPath);
+            yield exec.exec('chmod', ['+x', targetPath]); // Make binary executable
+            // await exec.exec(targetPath, ['version'])
             return path_1.default.dirname(targetPath);
         }
         catch (error) {
@@ -8613,7 +8615,7 @@ function Setup() {
             core.info(`Pluralith ${release.version} will be set up`);
             let binPath = yield tc.downloadTool(release.url);
             binPath = yield RenameReleaseBin(binPath, platform.os);
-            console.log(binPath);
+            console.log("binPath: ", binPath);
             core.addPath(binPath);
             yield AuthenticateWithAPIKey();
             core.info(`Pluralith ${release.version} set up and authenticated`);
