@@ -25,8 +25,8 @@ function GetPlatformDetails(): { os: string, arch: string } {
   }
 }
 
-// Get download URL for current OS anc arch from latest CLI release on Github
-async function GetLatestReleaseURL(platform: string, arch: string): Promise<string> {
+// Get download URL and version for current OS and arch from latest CLI release on Github
+async function GetLatestRelease(platform: string, arch: string): Promise<{ url: string, version: string }> {
   let releaseURL = "https://api.github.com/repos/pluralith/pluralith-cli/releases/latest"
 	let releaseData = await axios.get(releaseURL)
 
@@ -35,7 +35,10 @@ async function GetLatestReleaseURL(platform: string, arch: string): Promise<stri
 
   let binObject = releaseData.data.assets.find((release: any) => release.name.includes(binName))
 
-  return binObject.browser_download_url
+  return {
+    url: binObject.browser_download_url,
+    version: tagName
+  }
 }
 
 // Rename binary for addition to PATH
@@ -57,9 +60,11 @@ async function RenameReleaseBin(downloadPath: string, currentOS: string): Promis
 async function Setup(): Promise<void> {
   try {
     let platform = GetPlatformDetails()
-    let releaseURL = await GetLatestReleaseURL(platform.os, platform.arch)
+    let release = await GetLatestRelease(platform.os, platform.arch)
 
-    let binPath = await tc.downloadTool(releaseURL);
+    core.info(`Pluralith ${release.version} will be set up`);
+
+    let binPath = await tc.downloadTool(release.url);
     binPath = await RenameReleaseBin(binPath, platform.os)
 
     core.addPath(binPath)
