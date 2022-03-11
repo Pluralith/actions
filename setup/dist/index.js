@@ -8536,6 +8536,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const os_1 = __importDefault(__nccwpck_require__(2037));
 const axios_1 = __importDefault(__nccwpck_require__(6545));
+const path_1 = __importDefault(__nccwpck_require__(1017));
 const core = __importStar(__nccwpck_require__(2186));
 const tc = __importStar(__nccwpck_require__(7784));
 const io = __importStar(__nccwpck_require__(7436));
@@ -8574,14 +8575,15 @@ function GetLatestRelease(platform, arch) {
 // Rename binary for addition to PATH
 function RenameReleaseBin(downloadPath, currentOS) {
     return __awaiter(this, void 0, void 0, function* () {
-        let targetPath = currentOS === 'windows' ? 'pluralith.exe' : 'pluralith';
+        let targetName = currentOS === 'windows' ? 'pluralith.exe' : 'pluralith';
+        let targetPath = path_1.default.join(path_1.default.dirname(downloadPath), targetName);
         core.info(`Rename release binary from ${downloadPath} to ${targetPath}`);
         try {
             yield io.mv(downloadPath, targetPath);
-            return targetPath;
+            return path_1.default.dirname(targetPath);
         }
         catch (error) {
-            core.error(`Moving release binary from ${downloadPath} to ${targetPath} failed`);
+            core.error(`Renaming release binary from ${downloadPath} to ${targetPath} failed`);
             throw error;
         }
     });
@@ -8611,6 +8613,7 @@ function Setup() {
             core.info(`Pluralith ${release.version} will be set up`);
             let binPath = yield tc.downloadTool(release.url);
             binPath = yield RenameReleaseBin(binPath, platform.os);
+            console.log(binPath);
             core.addPath(binPath);
             yield AuthenticateWithAPIKey();
             core.info(`Pluralith ${release.version} set up and authenticated`);
