@@ -44,7 +44,7 @@ async function GetLatestRelease(platform: string, arch: string): Promise<{ url: 
 // Rename binary for addition to PATH
 async function RenameReleaseBin(downloadPath: string, currentOS: string): Promise<string> {
   let targetPath = currentOS === 'windows' ? 'pluralith.exe' : 'pluralith'
-  core.debug(`Rename release binary from ${downloadPath} to ${targetPath}`)
+  core.info(`Rename release binary from ${downloadPath} to ${targetPath}`)
 
   try {
     await io.mv(downloadPath, targetPath)
@@ -55,10 +55,26 @@ async function RenameReleaseBin(downloadPath: string, currentOS: string): Promis
   }
 }
 
+// Handle authentication setup for the CLI
+async function AuthenticateWithAPIKey(): Promise<void> {
+  let apiKey = core.getInput('api-key')
+
+  if (apiKey) {
+    let returnCode = await exec.exec('pluralith', ['login', '--api-key', apiKey])
+    if (returnCode !== 0) {
+      throw new Error(`Could not authenticate Pluralith with API key: ${returnCode}`)
+    }
+  } else {
+    throw new Error('No valid API key has been passed')
+  }
+}
+
 
 // Main entrypoint running the entire setup process
 async function Setup(): Promise<void> {
   try {
+    core.exportVariable('PLURALITH_GITHUB_ACTION', true);
+    
     let platform = GetPlatformDetails()
     let release = await GetLatestRelease(platform.os, platform.arch)
 
@@ -68,6 +84,9 @@ async function Setup(): Promise<void> {
     binPath = await RenameReleaseBin(binPath, platform.os)
 
     core.addPath(binPath)
+    await AuthenticateWithAPIKey()
+
+    core.info(`Pluralith ${release.version} set up and authenticated`);
   } catch(error) {
     core.setFailed(error as string | Error);
   } 
