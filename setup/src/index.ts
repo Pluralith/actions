@@ -1,5 +1,6 @@
 import os from 'os';
 import axios from 'axios';
+import path from 'path';
 
 import * as core from '@actions/core';
 import * as tc from '@actions/tool-cache';
@@ -43,7 +44,9 @@ async function GetLatestRelease(platform: string, arch: string): Promise<{ url: 
 
 // Rename binary for addition to PATH
 async function RenameReleaseBin(downloadPath: string, currentOS: string): Promise<string> {
-  let targetPath = currentOS === 'windows' ? 'pluralith.exe' : 'pluralith'
+  let targetName = currentOS === 'windows' ? 'pluralith.exe' : 'pluralith'
+  let targetPath = path.join(path.dirname(downloadPath), targetName)
+  
   core.info(`Rename release binary from ${downloadPath} to ${targetPath}`)
 
   try {
@@ -74,7 +77,7 @@ async function AuthenticateWithAPIKey(): Promise<void> {
 async function Setup(): Promise<void> {
   try {
     core.exportVariable('PLURALITH_GITHUB_ACTION', true);
-    
+
     let platform = GetPlatformDetails()
     let release = await GetLatestRelease(platform.os, platform.arch)
 
