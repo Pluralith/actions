@@ -1,0 +1,32 @@
+name: "Pluralith Comment"
+description: Posts a pull request comment with an infrastructure diagram based on the lastest Terraform state. Depends on Pluralith/actions/setup and Pluralith/actions/run
+inputs:
+  path:
+    description: The path to the 'comment.md' file the Pluralith CLI produces.
+    required: true
+  behavior:
+    description: The behavior used to post a comment with an infrastructure diagram attached. Must be one of 'update' | 'delete-and-new' | 'hide-and-new' | 'new'.
+    required: false
+    default: update
+  target-type:
+    description: The objects that should be commented on, either `pull-request` or `commit`.
+    required: false
+  github-token:
+    description: "GitHub access token to get the list of Pluralith CLI versions. Defaults to {{ github.token }}, can be set throught {{ secrets.GITHUB_TOKEN }}"
+    default: "${{ github.token }}"
+    required: false
+outputs:
+  body:
+    description: "The body of comment that was posted."
+    value: ${{ steps.compost-comment.outputs.body }}
+runs:
+  using: "composite"
+  steps:
+    - name: Post Pluralith comment
+      id: compost-comment
+      uses: infracost/compost-action@master
+      with:
+        body-file: "${{ inputs.path }}/comment.md"
+        behavior: ${{ inputs.behavior }}
+        target-type: ${{ inputs.target-type }}
+        github-token: ${{ inputs.github-token }}
