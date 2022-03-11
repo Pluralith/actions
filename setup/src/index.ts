@@ -1,4 +1,3 @@
-import path from 'path';
 import os from 'os';
 import axios from 'axios';
 
@@ -8,10 +7,12 @@ import * as io from '@actions/io';
 import * as exec from '@actions/exec';
 import * as github from '@actions/github';
 
+// Determine OS and arch so proper binaries can be downloaded
 function GetPlatformDetails(): { os: string, arch: string } {
   let currentOS;
   let currentArch = "amd64"// = os.arch() // Currently only amd64 supported
 
+  // Consolidate different unix-based platforms into "linux" to get correct binary
   let unixPlatforms = ['aix', 'freebsd','linux', 'openbsd', 'sunos']
 
   if (unixPlatforms.includes(os.platform())) currentOS = 'linux'
@@ -24,6 +25,7 @@ function GetPlatformDetails(): { os: string, arch: string } {
   }
 }
 
+// Get download URL for current OS anc arch from latest CLI release on Github
 async function GetLatestReleaseURL(platform: string, arch: string): Promise<string> {
   let releaseURL = "https://api.github.com/repos/pluralith/pluralith-cli/releases/latest"
 	let releaseData = await axios.get(releaseURL)
@@ -36,12 +38,14 @@ async function GetLatestReleaseURL(platform: string, arch: string): Promise<stri
   return binObject.browser_download_url
 }
 
-async function MoveReleaseBin(downloadPath: string) {
-  let targetPath = '/usr/local/bin/pluralith'
-  core.debug(`Move release binary from ${downloadPath} to ${targetPath}`)
+// Rename binary for addition to PATH
+async function RenameReleaseBin(downloadPath: string, currentOS: string): Promise<string> {
+  let targetPath = currentOS === 'windows' ? 'pluralith.exe' : 'pluralith'
+  core.debug(`Rename release binary from ${downloadPath} to ${targetPath}`)
 
   try {
     await io.mv(downloadPath, targetPath)
+    return targetPath
   } catch (error) {
     core.error(`Moving release binary from ${downloadPath} to ${targetPath} failed`)
     throw error
@@ -49,13 +53,19 @@ async function MoveReleaseBin(downloadPath: string) {
 }
 
 
-async function Setup() {
-  let platform = GetPlatformDetails()
-  let releaseURL = await GetLatestReleaseURL(platform.os, platform.arch)
+// Main entrypoint running the entire setup process
+async function Setup(): Promise<void> {
+  try {
+    let platform = GetPlatformDetails()
+    let releaseURL = await GetLatestReleaseURL(platform.os, platform.arch)
 
-  let binPath = await tc.downloadTool(releaseURL);
-  
-  if (platform.os !== 'windows') await MoveReleaseBin(binPath)
+    let binPath = await tc.downloadTool(releaseURL);
+    binPath = await RenameReleaseBin(binPath, platform.os)
+
+    core.addPath(binPath)
+  } catch(error) {
+    core.setFailed(error as string | Error);
+  } 
 }
 
 
