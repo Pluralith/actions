@@ -1,0 +1,20 @@
+# Placeholder action, see https://github.com/Pluralith/actions
+name: Pluralith Actions
+description: Generate infrastructure diagrams from Terraform state
+
+author: Pluralith
+branding:
+  icon: map
+  color: blue
+inputs:
+  api-key:
+    description: Your Pluralith API key, can be found in the Pluralith Desktop app or the Pluralith Dashboard
+    required: true
+runs:
+  using: "composite"
+  steps:
+    # Install and authenticate Pluralith CLI
+    - name: Setup Infracost
+      uses: Pluralith/actions/setup@v1
+      with:
+        api-key: ${{ inputs.api-key }}
