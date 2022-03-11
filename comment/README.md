@@ -6,6 +6,7 @@ The following actions need to be run for this action to work properly:
 - `Pluralith/actions/setup`
 - `Pluralith/actions/run`
 
+&nbsp;
 
 ## Usage
 
@@ -18,6 +19,8 @@ steps:
     with: 
       path: /tmp/comment.md
 ```
+
+&nbsp;
 
 ## Inputs
 
@@ -43,11 +46,12 @@ The action supports the following inputs:
           ...
         permissions:
           pull-requests: write
-          
     ```
+
+&nbsp;
 
 ## Outputs
 
-This action sets the following output:
+This action sets the following outputs:
 
 - `body`: The body of comment that was posted.
