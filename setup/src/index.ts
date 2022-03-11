@@ -51,9 +51,9 @@ async function RenameReleaseBin(downloadPath: string, currentOS: string): Promis
 
   try {
     await io.mv(downloadPath, targetPath)
-    return targetPath
+    return path.dirname(targetPath)
   } catch (error) {
-    core.error(`Moving release binary from ${downloadPath} to ${targetPath} failed`)
+    core.error(`Renaming release binary from ${downloadPath} to ${targetPath} failed`)
     throw error
   }
 }
@@ -85,6 +85,8 @@ async function Setup(): Promise<void> {
 
     let binPath = await tc.downloadTool(release.url);
     binPath = await RenameReleaseBin(binPath, platform.os)
+
+    console.log(binPath)
 
     core.addPath(binPath)
     await AuthenticateWithAPIKey()
