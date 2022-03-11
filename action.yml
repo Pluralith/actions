@@ -14,7 +14,7 @@ runs:
   using: "composite"
   steps:
     # Install and authenticate Pluralith CLI
-    - name: Setup Infracost
+    - name: Configure Pluralith
       uses: Pluralith/actions/setup@v1
       with:
         api-key: ${{ inputs.api-key }}
