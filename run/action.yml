@@ -1,0 +1,26 @@
+name: "Pluralith Run"
+description: Runs the Pluralith CLI and produces an infrastructure diagram based on the latest Terraform state as a PDF. Depends on Pluralith/actions/setup
+inputs:
+  terraform-path:
+    description: The path to your Terraform project directory (where you usually run Terraform plan)
+    required: true
+  diagram-title:
+    description: The title shown in your exported diagram PDF
+    required: true
+  diagram-author:
+    description: The author shown in your exported diagram PDF
+    required: false
+    default: Pluralith CLI
+  diagram-version:
+    description: The version shown in your exported diagram PDF
+    required: false
+    default: v1.0
+runs:
+  using: "composite"
+  steps:
+    - name: Install Pluralith Graph Module
+      run: pluralith install graph-module
+
+    - name: Generate Pluralith Diagram
+      run: pluralith graph --title ${{ inputs.diagram-title }} --author ${{ inputs.diagram-author }} --version ${{ inputs.diagram-version }} --out-dir ${{ env.working-directory }} --file-name "Output" --generate-md
+      working-directory: "${{ inputs.terraform-path }}"
