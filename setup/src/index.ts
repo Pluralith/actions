@@ -51,6 +51,7 @@ async function RenameReleaseBin(downloadPath: string, currentOS: string): Promis
 
   try {
     await io.mv(downloadPath, targetPath)
+    await exec.exec('chmod', ['+x', targetPath]) // Make binary executable
     return path.dirname(targetPath)
   } catch (error) {
     core.error(`Renaming release binary from ${downloadPath} to ${targetPath} failed`)
@@ -86,9 +87,9 @@ async function Setup(): Promise<void> {
     let binPath = await tc.downloadTool(release.url);
     binPath = await RenameReleaseBin(binPath, platform.os)
 
-    console.log(binPath)
-
+    console.log("binPath: ", binPath)
     core.addPath(binPath)
+    
     await AuthenticateWithAPIKey()
 
     core.info(`Pluralith ${release.version} set up and authenticated`);
