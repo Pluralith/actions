@@ -26,7 +26,7 @@ runs:
       id: compost-comment
       uses: infracost/compost-action@master
       with:
-        body-file: "${{ inputs.path }}/comment.md"
+        body-file: "${{ inputs.terraform-path }}/comment.md"
         behavior: ${{ inputs.behavior }}
         target-type: ${{ inputs.target-type }}
         github-token: ${{ inputs.github-token }}
