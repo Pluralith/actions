@@ -28,7 +28,7 @@ steps:
 
 The action supports the following inputs:
 
-- `path`: **Required** - The path to the 'comment.md' file the Pluralith CLI produces.
+- `terraform-path`: **Required** - The path to your Terraform project. This is where the Pluralith CLI produces the 'comment.md' file which contains the comment body.
 
 - `behavior`: **Optional** - The behavior used to post a comment with an infrastructure diagram attached. Defaults to `update`. Must be one of the following:
 

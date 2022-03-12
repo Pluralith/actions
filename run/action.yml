@@ -19,8 +19,9 @@ runs:
   using: "composite"
   steps:
     - name: Install Pluralith Graph Module
+      shell: bash
       run: pluralith install graph-module
-
     - name: Generate Pluralith Diagram
-      run: pluralith graph --title ${{ inputs.diagram-title }} --author ${{ inputs.diagram-author }} --version ${{ inputs.diagram-version }} --out-dir ${{ env.working-directory }} --file-name "Output" --generate-md
+      shell: bash
+      run: "pluralith graph --title ${{ inputs.diagram-title }} --author ${{ inputs.diagram-author }} --version ${{ inputs.diagram-version }} --file-name Output --generate-md"
       working-directory: "${{ inputs.terraform-path }}"
