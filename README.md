@@ -21,7 +21,7 @@ Follow these steps to get Pluralith running in your GitHub Actions workflow:
 1. Set `PLURALITH_API_KEY` as a [repository secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository). You can get your API key from the [Pluralith Desktop App](https://www.pluralith.com) or through the Pluralith Web Dashboard *(coming soon)*
 2. Set credentials for the providers of your choice as repository secrets *(e.g. for AWS set `AWS_ACCESS_KEY` and `AWS_SECRET_KEY`)*.
 3. Create a new Pluralith workflow file in your repo at `.github/workflows/pluralith.yml` *(View the full example at the bottom of this README to see how to structure a workflow YML file)*
-4. Set up your provider credentials to be used by terraform in the workflow. Check out the Terraform docs for your provider for more information on how to authenticate.
+4. Set up your provider credentials to be used by Terraform in the workflow. Check out the Terraform docs for your provider for more information on how to authenticate.
 5. Set up Terraform and run `terraform init`. Hashicorp's `hashicorp/setup-terraform` action makes this a breeze. Check it out [here](https://github.com/hashicorp/setup-terraform) or copy the example below into your steps:
  
       ```yml
