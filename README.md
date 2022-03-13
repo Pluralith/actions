@@ -64,7 +64,7 @@ Follow these steps to get Pluralith running in your GitHub Actions workflow:
 ## 🛰️ Action Overview
 
 Click the links below or navigate the repository above to learn more about the individual GitHub Actions for Pluralith:
-- **[Pluralith Setup](https://github.com/Pluralith/actions/tree/main/setup)** - Sets up and authenticate Pluralith
+- **[Pluralith Setup](https://github.com/Pluralith/actions/tree/main/setup)** - Sets up and authenticates Pluralith
 - **[Pluralith Run](https://github.com/Pluralith/actions/tree/main/run)** - Runs `pluralith graph` to produce an infrastructure diagram as a PDF
 - **[Pluralith Comment](https://github.com/Pluralith/actions/tree/main/comment)** - Posts the infrastructure diagram created in `Pluralith Run` as a GitHub comment to a pull request or commit
 
