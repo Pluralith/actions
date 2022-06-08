@@ -62,14 +62,14 @@ async function RenameReleaseBin(downloadPath: string, currentOS: string): Promis
 // Handle authentication setup for the CLI
 async function AuthenticateWithAPIKey(): Promise<void> {
   let apiKey = core.getInput('api-key')
+  let projectId = core.getInput('project-id')
+  
+  if (!apiKey) throw new Error('No valid API key has been passed')
+  if (!projectId) throw new Error('No valid project id has been passed')
 
-  if (apiKey) {
-    let returnCode = await exec.exec('pluralith', ['login', '--api-key', apiKey])
-    if (returnCode !== 0) {
-      throw new Error(`Could not authenticate Pluralith with API key: ${returnCode}`)
-    }
-  } else {
-    throw new Error('No valid API key has been passed')
+  let returnCode = await exec.exec('pluralith', ['init', '--api-key', apiKey, '--project-id', projectId])
+  if (returnCode !== 0) {
+    throw new Error(`Could not initialize Pluralith: ${returnCode}`)
   }
 }
 
