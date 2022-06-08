@@ -23,5 +23,5 @@ runs:
       run: pluralith install graph-module
     - name: Generate Pluralith Diagram
       shell: bash
-      run: "pluralith graph --title ${{ inputs.diagram-title }} --author ${{ inputs.diagram-author }} --version ${{ inputs.diagram-version }} --file-name Output --show-changes --generate-md"
+      run: "pluralith run"
       working-directory: "${{ inputs.terraform-path }}"
