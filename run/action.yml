@@ -1,5 +1,5 @@
 name: "Pluralith Run"
-description: Runs the Pluralith CLI and produces an infrastructure diagram based on the latest Terraform state as a PDF. Depends on Pluralith/actions/setup
+description: Runs the Pluralith CLI and produces an infrastructure diagram based on the latest Terraform state as a PDF. Depends on Pluralith/actions/init
 inputs:
   terraform-path:
     description: The path to your Terraform project directory (where you usually run Terraform plan)

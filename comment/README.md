@@ -5,7 +5,7 @@
 This GitHub Action posts the `comment.md` produced by the Pluralith CLI as a comment on either pull requests or commits. This action uses the [compost](https://github.com/infracost/compost) CLI tool created by [Infracost](https://github.com/infracost).
 The following actions need to be run for this action to work properly:
 
-- `Pluralith/actions/setup`
+- `Pluralith/actions/init`
 - `Pluralith/actions/run`
 
 &nbsp;

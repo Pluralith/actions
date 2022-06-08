@@ -3,7 +3,7 @@
 
 This repo contains a collection of Github Actions to run Pluralith in CI and post infrastructure diagrams as pull request or commit comments.
 It currently contains three actions, we recommend running them in conjunction:
-1) **Setup** - `Pluralith/actions/setup`
+1) **Init** - `Pluralith/actions/init`
 2) **Run** - `Pluralith/actions/run`
 3) **Comment** - `Pluralith/actions/comment`
 
@@ -39,8 +39,8 @@ Follow these steps to get Pluralith running in your GitHub Actions workflow:
 6. Set up and run Pluralith. Copy and paste the following three steps into your worflow:
       ```yml
       # Set up and authenticate Pluralith
-      - name: Pluralith Setup
-        uses: Pluralith/actions/setup@v1.0.0
+      - name: Pluralith Init
+        uses: Pluralith/actions/init@v1.0.0
         with:
           api-key: ${{ secrets.PLURALITH_API_KEY }}
 
@@ -64,7 +64,7 @@ Follow these steps to get Pluralith running in your GitHub Actions workflow:
 ## 🛰️ Action Overview
 
 Click the links below or navigate the repository above to learn more about the individual GitHub Actions for Pluralith:
-- **[Pluralith Setup](https://github.com/Pluralith/actions/tree/main/setup)** - Sets up and authenticates Pluralith
+- **[Pluralith Init](https://github.com/Pluralith/actions/tree/main/init)** - Sets up and authenticates Pluralith
 - **[Pluralith Run](https://github.com/Pluralith/actions/tree/main/run)** - Runs `pluralith graph` to produce an infrastructure diagram as a PDF
 - **[Pluralith Comment](https://github.com/Pluralith/actions/tree/main/comment)** - Posts the infrastructure diagram created in `Pluralith Run` as a GitHub comment to a pull request or commit
 
@@ -107,8 +107,8 @@ jobs:
         working-directory: "${{ env.working-directory }}/application"
 
       # Set up and authenticate Pluralith
-      - name: Pluralith Setup
-        uses: Pluralith/actions/setup@v1.0.0
+      - name: Pluralith Init
+        uses: Pluralith/actions/init@v1.0.0
         with:
           api-key: ${{ secrets.PLURALITH_API_KEY }}
 

@@ -8581,7 +8581,6 @@ function RenameReleaseBin(downloadPath, currentOS) {
         try {
             yield io.mv(downloadPath, targetPath);
             yield exec.exec('chmod', ['+x', targetPath]); // Make binary executable
-            // await exec.exec(targetPath, ['version'])
             return path_1.default.dirname(targetPath);
         }
         catch (error) {
@@ -8605,8 +8604,8 @@ function AuthenticateWithAPIKey() {
         }
     });
 }
-// Main entrypoint running the entire setup process
-function Setup() {
+// Main entrypoint running the entire init process
+function Init() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             core.exportVariable('PLURALITH_GITHUB_ACTION', true);
@@ -8625,7 +8624,7 @@ function Setup() {
         }
     });
 }
-Setup();
+Init();
 
 
 /***/ }),

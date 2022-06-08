@@ -1,0 +1,13 @@
+name: "Pluralith Init"
+description: Downloads and configures the Pluralith CLI in an Actions workflow. Enables users to automatically generate infrastructure diagrams as PDFs based on Terraform state
+inputs:
+  api-key:
+    description: Your Pluralith API key, can be found in the Pluralith Desktop app or the Pluralith Dashboard
+    required: true
+  github-token:
+    description: "The GitHub access token used to get a list of Pluralith CLI versions. Defaults to {{ github.token }}, can be set throught {{ secrets.GITHUB_TOKEN }}"
+    default: "${{ github.token }}"
+    required: false
+runs:
+  using: node16
+  main: dist/index.js
