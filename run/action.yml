@@ -6,7 +6,7 @@ inputs:
     required: true
   diagram-title:
     description: The title shown in your exported diagram PDF
-    required: true
+    required: false
   diagram-author:
     description: The author shown in your exported diagram PDF
     required: false
