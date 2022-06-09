@@ -8581,7 +8581,6 @@ function RenameReleaseBin(downloadPath, currentOS) {
         try {
             yield io.mv(downloadPath, targetPath);
             yield exec.exec('chmod', ['+x', targetPath]); // Make binary executable
-            // await exec.exec(targetPath, ['version'])
             return path_1.default.dirname(targetPath);
         }
         catch (error) {
@@ -8590,23 +8589,26 @@ function RenameReleaseBin(downloadPath, currentOS) {
         }
     });
 }
-// Handle authentication setup for the CLI
-function AuthenticateWithAPIKey() {
+// Handle initialization for the CLI
+function InitializeCLI() {
     return __awaiter(this, void 0, void 0, function* () {
         let apiKey = core.getInput('api-key');
-        if (apiKey) {
-            let returnCode = yield exec.exec('pluralith', ['login', '--api-key', apiKey]);
-            if (returnCode !== 0) {
-                throw new Error(`Could not authenticate Pluralith with API key: ${returnCode}`);
-            }
-        }
-        else {
+        let projectId = core.getInput('project-id');
+        let terraformPath = core.getInput('terraform-path');
+        if (!apiKey)
             throw new Error('No valid API key has been passed');
+        if (!projectId)
+            throw new Error('No project ID has been passed');
+        if (!terraformPath)
+            throw new Error('No path to your Terraform project has been passed');
+        let returnCode = yield exec.exec('pluralith', ['init', '--api-key', apiKey, '--project-id', projectId], { cwd: terraformPath });
+        if (returnCode !== 0) {
+            throw new Error(`Could not authenticate Pluralith with API key: ${returnCode}`);
         }
     });
 }
-// Main entrypoint running the entire setup process
-function Setup() {
+// Main entrypoint running the entire init process
+function Init() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             core.exportVariable('PLURALITH_GITHUB_ACTION', true);
@@ -8617,15 +8619,15 @@ function Setup() {
             binPath = yield RenameReleaseBin(binPath, platform.os);
             console.log("binPath: ", binPath);
             core.addPath(binPath);
-            yield AuthenticateWithAPIKey();
-            core.info(`Pluralith ${release.version} set up and authenticated`);
+            yield InitializeCLI();
+            core.info(`Pluralith ${release.version} set up and initialized`);
         }
         catch (error) {
             core.setFailed(error);
         }
     });
 }
-Setup();
+Init();
 
 
 /***/ }),

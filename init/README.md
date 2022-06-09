@@ -1,6 +1,6 @@
 ![GitHub Badge Blue](https://user-images.githubusercontent.com/25454503/157907219-fceef93a-1399-4a4a-b95b-a44fd44a156f.svg)
 
-# Pluralith Setup Action
+# Pluralith Init Action
 
 This GitHub Action downloads and configures the latest version of the Pluralith CLI in an Actions workflow.
 
@@ -12,10 +12,11 @@ Add the following step to your GitHub Actions workflow:
 
 ```yml
 steps:
-  - name: Pluralith Setup
-    uses: Pluralith/actions/setup@v1
+  - name: Pluralith Init
+    uses: Pluralith/actions/init@v1
     with:
       api-key: ${{ secrets.PLURALITH_API_KEY }}
+      project-id: ${{ secrets.PLURALITH_PROJECT_ID }}
 ```
 
 &nbsp;

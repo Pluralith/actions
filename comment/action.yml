@@ -1,5 +1,5 @@
 name: "Pluralith Comment"
-description: Posts a pull request comment with an infrastructure diagram based on the lastest Terraform state. Depends on Pluralith/actions/setup and Pluralith/actions/run
+description: Posts a pull request comment with an infrastructure diagram based on the lastest Terraform state. Depends on Pluralith/actions/init and Pluralith/actions/run
 inputs:
   terraform-path:
     description: The path to your Terraform project. This is where the Pluralith CLI produces the 'comment.md' file which contains the comment body.

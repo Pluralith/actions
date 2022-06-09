@@ -1,8 +1,14 @@
-name: "Pluralith Setup"
+name: "Pluralith Init"
 description: Downloads and configures the Pluralith CLI in an Actions workflow. Enables users to automatically generate infrastructure diagrams as PDFs based on Terraform state
 inputs:
   api-key:
     description: Your Pluralith API key, can be found in the Pluralith Desktop app or the Pluralith Dashboard
+    required: true
+  project-id:
+    description: Your Pluralith project ID, can be found on the Pluralith Dashboard in your project's settings
+    required: true
+  terraform-path:
+    description: The path to your Terraform project directory (where you usually run Terraform plan)
     required: true
   github-token:
     description: "The GitHub access token used to get a list of Pluralith CLI versions. Defaults to {{ github.token }}, can be set throught {{ secrets.GITHUB_TOKEN }}"

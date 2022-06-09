@@ -1,20 +1,41 @@
 name: "Pluralith Run"
-description: Runs the Pluralith CLI and produces an infrastructure diagram based on the latest Terraform state as a PDF. Depends on Pluralith/actions/setup
+description: Runs the Pluralith CLI and produces an infrastructure diagram based on the latest Terraform state as a PDF. Depends on Pluralith/actions/init
 inputs:
   terraform-path:
     description: The path to your Terraform project directory (where you usually run Terraform plan)
     required: true
-  diagram-title:
+  title:
     description: The title shown in your exported diagram PDF
-    required: true
-  diagram-author:
-    description: The author shown in your exported diagram PDF
     required: false
-    default: Pluralith CLI
-  diagram-version:
+    default: ""
+  version:
     description: The version shown in your exported diagram PDF
     required: false
-    default: v1.0
+    default: ""
+  export-pdf:
+    description: Generate a PDF export of the diagram locally on the pipeline runner
+    required: false
+    default: false
+  show-changes:
+    description: Highlight changes in the diagram
+    required: false
+    default: false
+  show-drift:
+    description: Highlight drift in the diagram
+    required: false
+    default: false
+  show-costs:
+    description: Show cost information in the diagram
+    required: false
+    default: false
+  cost-mode:
+    description: Set a cost mode, can be either 'total' or 'delta'
+    required: false
+    default: delta
+  cost-period:
+    description: Set a cost period, can be either 'hour' or 'month'
+    required: false
+    default: month
 runs:
   using: "composite"
   steps:
@@ -23,5 +44,5 @@ runs:
       run: pluralith install graph-module
     - name: Generate Pluralith Diagram
       shell: bash
-      run: "pluralith graph --title ${{ inputs.diagram-title }} --author ${{ inputs.diagram-author }} --version ${{ inputs.diagram-version }} --file-name Output --generate-md"
+      run: "pluralith run --title=${{ inputs.title }} --version=${{ inputs.version }} --export-pdf=${{ inputs.export-pdf }} --show-changes=${{ inputs.show-changes }} --show-drift=${{ inputs.show-drift }} --show-costs=${{ inputs.show-costs }} --cost-mode=${{ inputs.cost-mode }} --cost-period=${{ inputs.cost-period }}"
       working-directory: "${{ inputs.terraform-path }}"

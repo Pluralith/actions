@@ -15,6 +15,6 @@ runs:
   steps:
     # Install and authenticate Pluralith CLI
     - name: Configure Pluralith
-      uses: Pluralith/actions/setup@v1
+      uses: Pluralith/actions/init@v1
       with:
         api-key: ${{ inputs.api-key }}

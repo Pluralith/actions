@@ -5,7 +5,7 @@
 This GitHub Action runs the Pluralith CLI and produces an infrastructure diagram based on the latest Terraform state as a PDF.
 The following actions need to be run for this action to work properly:
 
-- `Pluralith/actions/setup`
+- `Pluralith/actions/init`
 
 &nbsp;
 

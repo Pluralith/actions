@@ -6,7 +6,6 @@ import * as core from '@actions/core';
 import * as tc from '@actions/tool-cache';
 import * as io from '@actions/io';
 import * as exec from '@actions/exec';
-import * as github from '@actions/github';
 
 // Determine OS and arch so proper binaries can be downloaded
 function GetPlatformDetails(): { os: string, arch: string } {
@@ -59,23 +58,25 @@ async function RenameReleaseBin(downloadPath: string, currentOS: string): Promis
   }
 }
 
-// Handle authentication setup for the CLI
-async function AuthenticateWithAPIKey(): Promise<void> {
+// Handle initialization for the CLI
+async function InitializeCLI(): Promise<void> {
   let apiKey = core.getInput('api-key')
+  let projectId = core.getInput('project-id')
+  let terraformPath = core.getInput('terraform-path')
 
-  if (apiKey) {
-    let returnCode = await exec.exec('pluralith', ['login', '--api-key', apiKey])
-    if (returnCode !== 0) {
-      throw new Error(`Could not authenticate Pluralith with API key: ${returnCode}`)
-    }
-  } else {
-    throw new Error('No valid API key has been passed')
+  if (!apiKey) throw new Error('No valid API key has been passed')
+  if (!projectId) throw new Error('No project ID has been passed')
+  if (!terraformPath) throw new Error('No path to your Terraform project has been passed')
+
+  let returnCode = await exec.exec('pluralith', ['init', '--api-key', apiKey, '--project-id', projectId], { cwd: terraformPath })
+  if (returnCode !== 0) {
+    throw new Error(`Could not authenticate Pluralith with API key: ${returnCode}`)
   }
 }
 
 
-// Main entrypoint running the entire setup process
-async function Setup(): Promise<void> {
+// Main entrypoint running the entire init process
+async function Init(): Promise<void> {
   try {
     core.exportVariable('PLURALITH_GITHUB_ACTION', true);
 
@@ -90,14 +91,13 @@ async function Setup(): Promise<void> {
     console.log("binPath: ", binPath)
     core.addPath(binPath)
     
-    await AuthenticateWithAPIKey()
+    await InitializeCLI()
 
-    core.info(`Pluralith ${release.version} set up and authenticated`);
+    core.info(`Pluralith ${release.version} set up and initialized`);
   } catch(error) {
     core.setFailed(error as string | Error);
   } 
 }
 
 
-Setup()
-
+Init()
