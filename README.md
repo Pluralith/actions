@@ -42,6 +42,7 @@ Follow these steps to get Pluralith running in your GitHub Actions workflow:
       - name: Pluralith Init
         uses: Pluralith/actions/init@v1.1.0
         with:
+          terraform-path: "${{ env.working-directory }}/application"
           api-key: ${{ secrets.PLURALITH_API_KEY }}
           project-id: ${{ secrets.PLURALITH_PROJECT_ID }}
 
@@ -111,6 +112,7 @@ jobs:
       - name: Pluralith Init
         uses: Pluralith/actions/init@v1.1.0
         with:
+          terraform-path: "${{ env.working-directory }}/application"
           api-key: ${{ secrets.PLURALITH_API_KEY }}
           project-id: ${{ secrets.PLURALITH_PROJECT_ID }}
 
