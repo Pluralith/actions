@@ -6,7 +6,6 @@ import * as core from '@actions/core';
 import * as tc from '@actions/tool-cache';
 import * as io from '@actions/io';
 import * as exec from '@actions/exec';
-import * as github from '@actions/github';
 
 // Determine OS and arch so proper binaries can be downloaded
 function GetPlatformDetails(): { os: string, arch: string } {
@@ -102,4 +101,3 @@ async function Init(): Promise<void> {
 
 
 Init()
-
