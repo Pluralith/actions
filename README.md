@@ -108,22 +108,23 @@ jobs:
 
       # Set up and authenticate Pluralith
       - name: Pluralith Init
-        uses: Pluralith/actions/init@v1.0.0
+        uses: Pluralith/actions/init@v1.1.0
         with:
           api-key: ${{ secrets.PLURALITH_API_KEY }}
+          project-id: ${{ secrets.PLURALITH_PROJECT_ID }}
 
       # Run Pluralith to generate an infrastructure diagram and comment body
       - name: Pluralith Run
-        uses: Pluralith/actions/run@v1.0.0
+        uses: Pluralith/actions/run@v1.1.0
         with:
           terraform-path: "${{ env.working-directory }}/application"
-          diagram-title: "Actions Test"
-          diagram-author: "Pluralith Core Team"
-          diagram-version: "v0.1.0"
+          show-changes: true
+          show-drift: true
+          show-costs: true # Requires Infracost to be set up in your pipeline
 
       # Post the generated diagram as a GitHub comment
       - name: Pluralith Comment
-        uses: Pluralith/actions/comment@v1.0.0
+        uses: Pluralith/actions/comment@v1.1.0
         with:
           terraform-path: "${{ env.working-directory }}/application"
 ```
