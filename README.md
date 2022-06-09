@@ -18,7 +18,7 @@ It currently contains three actions, we recommend running them in conjunction:
 ## ⚙️ Getting Started
 
 Follow these steps to get Pluralith running in your GitHub Actions workflow:
-1. Set `PLURALITH_API_KEY` as a [repository secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository). You can get your API key from the [Pluralith Desktop App](https://www.pluralith.com) or through the Pluralith Web Dashboard *(coming soon)*
+1. Set `PLURALITH_API_KEY` and `PLURALITH_PROJECT_ID` as a [repository secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository). You can get your API Key and Project ID through the Pluralith Web Dashboard.
 2. Set credentials for the providers of your choice as repository secrets *(e.g. for AWS set `AWS_ACCESS_KEY` and `AWS_SECRET_KEY`)*.
 3. Create a new Pluralith workflow file in your repo at `.github/workflows/pluralith.yml` *(View the full example at the bottom of this README to see how to structure a workflow YML file)*
 4. Set up your provider credentials to be used by Terraform in the workflow. Check out the Terraform docs for your provider for more information on how to authenticate.
@@ -40,22 +40,23 @@ Follow these steps to get Pluralith running in your GitHub Actions workflow:
       ```yml
       # Set up and authenticate Pluralith
       - name: Pluralith Init
-        uses: Pluralith/actions/init@v1.0.0
+        uses: Pluralith/actions/init@v1.1.0
         with:
           api-key: ${{ secrets.PLURALITH_API_KEY }}
+          project-id: ${{ secrets.PLURALITH_PROJECT_ID }}
 
       # Run Pluralith to generate an infrastructure diagram and comment body
       - name: Pluralith Run
-        uses: Pluralith/actions/run@v1.0.0
+        uses: Pluralith/actions/run@v1.1.0
         with:
           terraform-path: "${{ env.working-directory }}/application"
-          diagram-title: "Actions Test"
-          diagram-author: "Pluralith Core Team"
-          diagram-version: "v0.1.0"
+          show-changes: true
+          show-drift: true
+          show-costs: true # Requires Infracost to be set up in your pipeline
 
       # Post the generated diagram as a GitHub comment
       - name: Pluralith Comment
-        uses: Pluralith/actions/comment@v1.0.0
+        uses: Pluralith/actions/comment@v1.1.0
         with:
           terraform-path: "${{ env.working-directory }}/application"
       ```
