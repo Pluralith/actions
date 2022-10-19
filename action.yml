@@ -18,3 +18,27 @@ runs:
       uses: Pluralith/actions/init@v1
       with:
         api-key: ${{ inputs.api-key }}
+
+    # Set up and authenticate Pluralith
+    - name: Pluralith Init
+      uses: Pluralith/actions/init@v1.2.0
+      with:
+        terraform-path: "${{ env.working-directory }}/your-terraform-project"
+        api-key: ${{ secrets.PLURALITH_API_KEY }}
+        project-id: ${{ secrets.PLURALITH_PROJECT_ID }}
+
+    # Run Pluralith to generate an infrastructure diagram and comment body
+    - name: Pluralith Run
+      uses: Pluralith/actions/run@v1.2.0
+      with:
+        terraform-command: "plan"
+        terraform-path: "${{ env.working-directory }}/your-terraform-project"
+        show-changes: true
+        show-drift: true
+        show-costs: true # Requires Infracost to be set up in your pipeline
+
+    # Post the generated diagram as a GitHub comment
+    - name: Pluralith Comment
+      uses: Pluralith/actions/comment@v1.2.0
+      with:
+        terraform-path: "${{ env.working-directory }}/your-terraform-project"

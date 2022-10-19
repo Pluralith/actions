@@ -22,11 +22,14 @@ outputs:
 runs:
   using: "composite"
   steps:
+    - name: Move comment file to top level
+      shell: bash
+      run: mv "${{ inputs.terraform-path }}"/comment.md ./comment.md
     - name: Post Pluralith comment
       id: compost-comment
       uses: infracost/compost-action@master
       with:
-        body-file: "${{ inputs.terraform-path }}/comment.md"
+        body-file: "comment.md"
         behavior: ${{ inputs.behavior }}
         target-type: ${{ inputs.target-type }}
         github-token: ${{ inputs.github-token }}

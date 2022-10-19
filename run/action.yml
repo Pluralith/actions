@@ -1,6 +1,9 @@
 name: "Pluralith Run"
 description: Runs the Pluralith CLI and produces an infrastructure diagram based on the latest Terraform state as a PDF. Depends on Pluralith/actions/init
 inputs:
+  terraform-command:
+    description: The Terraform command you want to run (can be plan, apply or destroy)
+    required: true
   terraform-path:
     description: The path to your Terraform project directory (where you usually run Terraform plan)
     required: true
@@ -44,5 +47,5 @@ runs:
       run: pluralith install graph-module
     - name: Generate Pluralith Diagram
       shell: bash
-      run: "pluralith run --title=${{ inputs.title }} --version=${{ inputs.version }} --export-pdf=${{ inputs.export-pdf }} --show-changes=${{ inputs.show-changes }} --show-drift=${{ inputs.show-drift }} --show-costs=${{ inputs.show-costs }} --cost-mode=${{ inputs.cost-mode }} --cost-period=${{ inputs.cost-period }}"
+      run: "pluralith run ${{ inputs.terraform-command }} --title=${{ inputs.title }} --version=${{ inputs.version }} --export-pdf=${{ inputs.export-pdf }} --show-changes=${{ inputs.show-changes }} --show-drift=${{ inputs.show-drift }} --show-costs=${{ inputs.show-costs }} --cost-mode=${{ inputs.cost-mode }} --cost-period=${{ inputs.cost-period }}"
       working-directory: "${{ inputs.terraform-path }}"
