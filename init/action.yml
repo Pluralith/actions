@@ -4,12 +4,18 @@ inputs:
   api-key:
     description: Your Pluralith API key, can be found in the Pluralith Desktop app or the Pluralith Dashboard
     required: true
-  project-id:
-    description: Your Pluralith project ID, can be found on the Pluralith Dashboard in your project's settings
-    required: true
   terraform-path:
     description: The path to your Terraform project directory (where you usually run Terraform plan)
     required: true
+  org-id:
+    description: (Only required when no pluralith.yml or environment variable PLURALITH_ORG_ID given) Your Pluralith org ID, can be found on the Pluralith Dashboard in your org's settings
+    required: false
+  project-id:
+    description: (Only required when no pluralith.yml or environment variable PLURALITH_PROJECT_ID given) Your Pluralith project ID. If no project with given ID exists, a new one will be created automatically.
+    required: false
+  project-name:
+    description: (Only required when no pluralith.yml or environment variable PLURALITH_ORG_NAME given) Your Pluralith project name. If a new project is created due to a non-existent project ID, this name will be used to create the project.
+    required: false
   github-token:
     description: "The GitHub access token used to get a list of Pluralith CLI versions. Defaults to {{ github.token }}, can be set throught {{ secrets.GITHUB_TOKEN }}"
     default: "${{ github.token }}"

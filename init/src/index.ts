@@ -61,16 +61,20 @@ async function RenameReleaseBin(downloadPath: string, currentOS: string): Promis
 // Handle initialization for the CLI
 async function InitializeCLI(): Promise<void> {
   let apiKey = core.getInput('api-key')
-  let projectId = core.getInput('project-id')
+  let orgId = core.getInput('org-id') || process.env['PLURALITH_ORG_ID']
+  let projectId = core.getInput('project-id') || process.env['PLURALITH_PROJECT_ID']
+  let projectName = core.getInput('project-name') || process.env['PLURALITH_PROJECT_NAME']
   let terraformPath = core.getInput('terraform-path')
 
-  if (!apiKey) throw new Error('No valid API key has been passed')
-  if (!projectId) throw new Error('No project ID has been passed')
-  if (!terraformPath) throw new Error('No path to your Terraform project has been passed')
+  let commandArguments = ['init', '--no-inputs', '--api-key', apiKey]
+  // If values are present here, pass them to init command, otherwise rely on pluralith.yml
+  if (orgId && projectId && projectName) {
+    commandArguments = [...commandArguments, '--org-id', orgId, '--project-id', projectId, '--project-name', projectName]
+  }
 
-  let returnCode = await exec.exec('pluralith', ['init', '--api-key', apiKey, '--project-id', projectId], { cwd: terraformPath })
+  let returnCode = await exec.exec('pluralith', commandArguments, { cwd: terraformPath })
   if (returnCode !== 0) {
-    throw new Error(`Could not authenticate Pluralith with API key: ${returnCode}`)
+    throw new Error(`Could not initialize Pluralith project: ${returnCode}`)
   }
 }
 
@@ -83,7 +87,7 @@ async function Init(): Promise<void> {
     let platform = GetPlatformDetails()
     let release = await GetLatestRelease(platform.os, platform.arch)
 
-    core.info(`Pluralith ${release.version} will be set up`);
+    core.info(`Pluralith CLI ${release.version} will be set up`);
 
     let binPath = await tc.downloadTool(release.url);
     binPath = await RenameReleaseBin(binPath, platform.os)
@@ -93,7 +97,7 @@ async function Init(): Promise<void> {
     
     await InitializeCLI()
 
-    core.info(`Pluralith ${release.version} set up and initialized`);
+    core.info(`Pluralith CLI ${release.version} set up and initialized`);
   } catch(error) {
     core.setFailed(error as string | Error);
   } 

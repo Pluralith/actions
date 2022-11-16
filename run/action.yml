@@ -42,9 +42,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Install Pluralith Graph Module
-      shell: bash
-      run: pluralith install graph-module
     - name: Generate Pluralith Diagram
       shell: bash
       run: "pluralith run ${{ inputs.terraform-command }} --title=${{ inputs.title }} --version=${{ inputs.version }} --export-pdf=${{ inputs.export-pdf }} --show-changes=${{ inputs.show-changes }} --show-drift=${{ inputs.show-drift }} --show-costs=${{ inputs.show-costs }} --cost-mode=${{ inputs.cost-mode }} --cost-period=${{ inputs.cost-period }}"

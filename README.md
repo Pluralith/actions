@@ -13,7 +13,7 @@ It currently contains three actions, we recommend running them in conjunction:
 
 ### 📍 The result looks like this:
 
-![Actions Example](https://user-images.githubusercontent.com/25454503/158020347-409bde98-8f20-43b3-9b68-15604191f9d1.png)
+![Actions Comment](https://user-images.githubusercontent.com/25454503/202181204-42c768ad-4a45-45dc-b391-65c231f52991.png)
 
 &nbsp;
 
@@ -21,10 +21,16 @@ It currently contains three actions, we recommend running them in conjunction:
 
 Follow these steps to get Pluralith running in your GitHub Actions workflow:
 
-1. Set `PLURALITH_API_KEY` and `PLURALITH_PROJECT_ID` as a [repository secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository). You can get your API Key and Project ID through the Pluralith Dashboard.
-2. Set credentials for the providers of your choice as repository secrets _(e.g. for AWS set `AWS_ACCESS_KEY` and `AWS_SECRET_KEY`)_.
-3. Create a new Pluralith workflow file in your repo at `.github/workflows/pluralith.yml` _(View the full example at the bottom of this README to see how to structure a workflow YML file)_
-4. Set up Terraform and run `terraform init`. Hashicorp's `hashicorp/setup-terraform` action makes this a breeze. Check it out [here](https://github.com/hashicorp/setup-terraform) or copy the example below into your steps:
+1. Create a new Pluralith workflow file in your repo at `.github/workflows/pluralith.yml` _(View the full example at the bottom of this README to see how to structure a workflow YML file)_
+2. Set `PLURALITH_API_KEY` as a [repository secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository). You can get your API Key through the Pluralith Dashboard.
+3. Ensure Pluralith is properly configured. There are multiple options to do this:
+
+    - Commit a valid [Pluralith Config File](https://docs.pluralith.com/docs/more/config) (pluralith.yml) to your repo
+    - Set `PLURALITH_ORG_ID`, `PLURALITH_PROJECT_ID` and `PLURALITH_PROJECT_NAME` as [environment variables](https://docs.github.com/en/actions/learn-github-actions/environment-variables) in your workflow.
+    - Pass `org_id`, `project_id` and `project_name` directly as parameters to the **Pluralith Init** step.
+
+4. Set credentials for the providers of your choice as repository secrets _(e.g. for AWS set `AWS_ACCESS_KEY` and `AWS_SECRET_KEY`)_.
+5. Set up Terraform and run `terraform init`. Hashicorp's `hashicorp/setup-terraform` action makes this a breeze. Check it out [here](https://github.com/hashicorp/setup-terraform) or copy the example below into your steps:
 
 ```yml
 # Set up Terraform
@@ -39,20 +45,19 @@ Follow these steps to get Pluralith running in your GitHub Actions workflow:
   working-directory: path/to/terraform/root
 ```
 
-5. Set up and run Pluralith. Copy and paste the following three steps into your worflow:
+6. Set up and run Pluralith. Copy and paste the following three steps into your worflow:
 
 ```yml
-# Set up and authenticate Pluralith
+# Set up and initialize Pluralith
 - name: Pluralith Init
-  uses: Pluralith/actions/init@v1.2.0
+  uses: Pluralith/actions/init@v1.3.0
   with:
     terraform-path: "${{ env.working-directory }}/application"
     api-key: ${{ secrets.PLURALITH_API_KEY }}
-    project-id: ${{ secrets.PLURALITH_PROJECT_ID }}
 
 # Run Pluralith to generate an infrastructure diagram and comment body
 - name: Pluralith Run
-  uses: Pluralith/actions/run@v1.2.0
+  uses: Pluralith/actions/run@v1.3.0
   with:
     terraform-command: "plan"
     terraform-path: "${{ env.working-directory }}/application"
@@ -62,12 +67,12 @@ Follow these steps to get Pluralith running in your GitHub Actions workflow:
 
 # Post the generated diagram as a GitHub comment
 - name: Pluralith Comment
-  uses: Pluralith/actions/comment@v1.2.0
+  uses: Pluralith/actions/comment@v1.3.0
   with:
     terraform-path: "${{ env.working-directory }}/application"
 ```
 
-6. That's it! Create a pull request and see the magic happen in its comments!
+7. That's it! Create a pull request and see the magic happen in its comments!
    &nbsp;
 
 ## 🛰️ Action Overview
@@ -83,6 +88,8 @@ Click the links below or navigate the repository above to learn more about the i
 ## 📦 Full AWS Example
 
 If you are running AWS you can copy and paste the following into your `.github/workflows/pluralith.yml`. Adjust the paths to fit your Terraform project structure and you should be ready to go!
+
+`This example assumes a valid **pluralith.yml** config file in your Terraform project's root directory` 
 
 ```yml
 on: [pull_request]
@@ -118,15 +125,14 @@ jobs:
 
       # Set up and authenticate Pluralith
       - name: Pluralith Init
-        uses: Pluralith/actions/init@v1.2.0
+        uses: Pluralith/actions/init@v1.3.0
         with:
           terraform-path: "${{ env.working-directory }}/application"
           api-key: ${{ secrets.PLURALITH_API_KEY }}
-          project-id: ${{ secrets.PLURALITH_PROJECT_ID }}
 
       # Run Pluralith to generate an infrastructure diagram and comment body
       - name: Pluralith Run
-        uses: Pluralith/actions/run@v1.2.0
+        uses: Pluralith/actions/run@v1.3.0
         with:
           terraform-command: "plan"
           terraform-path: "${{ env.working-directory }}/application"
@@ -136,7 +142,7 @@ jobs:
 
       # Post the generated diagram as a GitHub comment
       - name: Pluralith Comment
-        uses: Pluralith/actions/comment@v1.2.0
+        uses: Pluralith/actions/comment@v1.3.0
         with:
           terraform-path: "${{ env.working-directory }}/application"
 ```
