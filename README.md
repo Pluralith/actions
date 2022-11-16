@@ -13,7 +13,7 @@ It currently contains three actions, we recommend running them in conjunction:
 
 ### 📍 The result looks like this:
 
-![Actions Example](https://user-images.githubusercontent.com/25454503/158020347-409bde98-8f20-43b3-9b68-15604191f9d1.png)
+![Actions Comment](https://user-images.githubusercontent.com/25454503/202181204-42c768ad-4a45-45dc-b391-65c231f52991.png)
 
 &nbsp;
 
