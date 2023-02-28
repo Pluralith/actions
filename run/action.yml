@@ -7,6 +7,10 @@ inputs:
   terraform-path:
     description: The path to your Terraform project directory (where you usually run Terraform plan)
     required: true
+  terraform-var-file:
+    description: the Path to a Terraform variables file to be passed to Pluralith and used for generating a plan under the hood
+    required: false
+    default: ""
   title:
     description: The title shown in your exported diagram PDF
     required: false
@@ -39,10 +43,15 @@ inputs:
     description: Set a cost period, can be either 'hour' or 'month'
     required: false
     default: month
+  cost-usage-file:
+    description: The path to an infracost usage file
+    required: false
+    default: ""
+   
 runs:
   using: "composite"
   steps:
     - name: Generate Pluralith Diagram
       shell: bash
-      run: "pluralith run ${{ inputs.terraform-command }} --title=${{ inputs.title }} --version=${{ inputs.version }} --export-pdf=${{ inputs.export-pdf }} --show-changes=${{ inputs.show-changes }} --show-drift=${{ inputs.show-drift }} --show-costs=${{ inputs.show-costs }} --cost-mode=${{ inputs.cost-mode }} --cost-period=${{ inputs.cost-period }}"
+      run: "pluralith run ${{ inputs.terraform-command }} --var-file=${{ inputs.terraform-var-file }} --title=${{ inputs.title }} --version=${{ inputs.version }} --export-pdf=${{ inputs.export-pdf }} --show-changes=${{ inputs.show-changes }} --show-drift=${{ inputs.show-drift }} --show-costs=${{ inputs.show-costs }} --cost-mode=${{ inputs.cost-mode }} --cost-period=${{ inputs.cost-period }} --cost-usage-file=${{ inputs.cost-usage-file }}"
       working-directory: "${{ inputs.terraform-path }}"
