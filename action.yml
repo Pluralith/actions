@@ -8,21 +8,21 @@ branding:
   color: blue
 inputs:
   api-key:
-    description: Your Pluralith API key, can be found in the Pluralith Desktop app or the Pluralith Dashboard
+    description: Your Pluralith API key, can be found in the Pluralith Dashboard
     required: true
 runs:
   using: "composite"
   steps:
     # Set up and initialize Pluralith
     - name: Pluralith Init
-      uses: Pluralith/actions/init@v1.3.0
+      uses: Pluralith/actions/init@v1.4.0
       with:
         terraform-path: "${{ env.working-directory }}/your-terraform-project"
         api-key: ${{ secrets.PLURALITH_API_KEY }}
 
     # Run Pluralith to generate an infrastructure diagram and comment body
     - name: Pluralith Run
-      uses: Pluralith/actions/run@v1.3.0
+      uses: Pluralith/actions/run@v1.4.0
       with:
         terraform-command: "plan"
         terraform-path: "${{ env.working-directory }}/your-terraform-project"
@@ -32,6 +32,6 @@ runs:
 
     # Post the generated diagram as a GitHub comment
     - name: Pluralith Comment
-      uses: Pluralith/actions/comment@v1.3.0
+      uses: Pluralith/actions/comment@v1.4.0
       with:
         terraform-path: "${{ env.working-directory }}/your-terraform-project"
