@@ -50,14 +50,14 @@ Follow these steps to get Pluralith running in your GitHub Actions workflow:
 ```yml
 # Set up and initialize Pluralith
 - name: Pluralith Init
-  uses: Pluralith/actions/init@v1.3.0
+  uses: Pluralith/actions/init@v1.4.0
   with:
     terraform-path: "${{ env.working-directory }}/application"
     api-key: ${{ secrets.PLURALITH_API_KEY }}
 
 # Run Pluralith to generate an infrastructure diagram and comment body
 - name: Pluralith Run
-  uses: Pluralith/actions/run@v1.3.0
+  uses: Pluralith/actions/run@v1.4.0
   with:
     terraform-command: "plan"
     terraform-path: "${{ env.working-directory }}/application"
@@ -67,7 +67,7 @@ Follow these steps to get Pluralith running in your GitHub Actions workflow:
 
 # Post the generated diagram as a GitHub comment
 - name: Pluralith Comment
-  uses: Pluralith/actions/comment@v1.3.0
+  uses: Pluralith/actions/comment@v1.4.0
   with:
     terraform-path: "${{ env.working-directory }}/application"
 ```
@@ -125,14 +125,14 @@ jobs:
 
       # Set up and authenticate Pluralith
       - name: Pluralith Init
-        uses: Pluralith/actions/init@v1.3.0
+        uses: Pluralith/actions/init@v1.4.0
         with:
           terraform-path: "${{ env.working-directory }}/application"
           api-key: ${{ secrets.PLURALITH_API_KEY }}
 
       # Run Pluralith to generate an infrastructure diagram and comment body
       - name: Pluralith Run
-        uses: Pluralith/actions/run@v1.3.0
+        uses: Pluralith/actions/run@v1.4.0
         with:
           terraform-command: "plan"
           terraform-path: "${{ env.working-directory }}/application"
@@ -142,7 +142,7 @@ jobs:
 
       # Post the generated diagram as a GitHub comment
       - name: Pluralith Comment
-        uses: Pluralith/actions/comment@v1.3.0
+        uses: Pluralith/actions/comment@v1.4.0
         with:
           terraform-path: "${{ env.working-directory }}/application"
 ```
